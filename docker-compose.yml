@@ -1,0 +1,108 @@
+version: "3.8"
+
+services:
+  vote:
+    build: ./vote
+    container_name: vote
+    ports:
+      - "8080:80"
+    volumes:
+     - ./vote:/usr/local/app
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - frontend
+      - backend
+
+  result:
+    build: ./result
+    container_name: result
+    entrypoint: nodemon --inspect=0.0.0.0 server.js
+    ports:
+      - "8081:80"
+      - "127.0.0.1:9229:9229"
+    volumes:
+      - ./result:/usr/local/app
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - frontend
+      - backend
+
+  worker:
+    build: ./worker
+    container_name: worker
+    depends_on:
+      redis:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    networks:
+      - backend
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "host=$$(hostname -i || echo '127.0.0.1') && redis-cli -h \"$$host\" ping | grep -q PONG"
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    networks:
+      - backend
+
+  db:
+    image: postgres:15-alpine
+    container_name: db
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - "pgdata:/var/lib/postgresql/data"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "host=$$(hostname -i || echo '127.0.0.1') && export PGPASSWORD=\"${POSTGRES_PASSWORD:-}\" && psql --host=\"$$host\" --username=\"${POSTGRES_USER:-postgres}\" --dbname=\"${POSTGRES_DB:-${POSTGRES_USER:-postgres}}\" --quiet --no-align --tuples-only -c \"SELECT 1\" | grep -q 1"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    networks:
+      - backend
+
+  jenkins:
+    image: jenkins/jenkins
+    container_name: jenkins
+    ports:
+      - "8082:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - backend
+
+
+volumes:
+  pgdata:
+  jenkins_home:
+
+networks:
+  frontend:
+  backend:
