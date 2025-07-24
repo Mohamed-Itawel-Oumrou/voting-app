@@ -4,7 +4,7 @@ pipeline {
   stages {
     stage('Clone') {
       steps {
-        git url: 'https://github.com/inaleoby/docker-compose-Jenkins.git', branch: 'main'
+        git url: 'https://github.com/Mohamed-Itawel-Oumrou/voting-app', branch: 'master'
       }
     }
 
