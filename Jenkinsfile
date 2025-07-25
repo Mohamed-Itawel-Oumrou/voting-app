@@ -17,7 +17,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh 'docker compose --env-file .env build vote result worker'
+        sh 'docker compose --env-file .env build --no-cache vote result worker'
       }
     }
 
