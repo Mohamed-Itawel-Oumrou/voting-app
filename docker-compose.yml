@@ -6,8 +6,8 @@ services:
     container_name: vote
     ports:
       - "8080:80"
-    volumes:
-     - ./vote:/usr/local/app
+    # volumes:
+    #  - ./vote:/usr/local/app
     depends_on:
       redis:
         condition: service_healthy
@@ -28,8 +28,8 @@ services:
     ports:
       - "8081:80"
       - "127.0.0.1:9229:9229"
-    volumes:
-      - ./result:/usr/local/app
+    # volumes:
+    #   - ./result:/usr/local/app
     depends_on:
       db:
         condition: service_healthy
