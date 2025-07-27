@@ -1,3 +1,8 @@
 chmod +x init.sh
 ./init.sh
 docker compose up -d jenkins
+
+Docker registry credentials (flemme de traduire en francais)
+Username : groupedevops
+Password : 85'7Cvx11T-y
+ID : docker-hub-creds
