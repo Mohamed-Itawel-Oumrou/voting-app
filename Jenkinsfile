@@ -12,20 +12,19 @@ pipeline {
       steps {
         sh 'chmod +x ./init.sh'
         sh './init.sh'
-        sh 'commande invalide'
       }
     }
 
     stage('Build') {
       steps {
-        sh 'docker compose --env-file .env build --no-cache vote result worker'
+        sh 'docker compose --env-file .env build --no-cache vote result worker nginx'
       }
     }
 
     stage('Deploy') {
       steps {
-        sh 'docker compose --env-file .env down -v vote result worker redis db'
-        sh 'docker compose --env-file .env up -d vote result worker redis db'
+        sh 'docker compose --env-file .env down -v vote result worker redis db nginx'
+        sh 'docker compose --env-file .env up -d vote result worker redis db nginx'
       }
     }
 

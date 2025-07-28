@@ -1,0 +1,64 @@
+voting-app
+|   .DS_Store
+|   .env
+|   .env.exemple
+|   .gitignore
+|   architecture.excalidraw.png
+|   architecture.png
+|   docker-compose.yml
+|   init.sh
+|   Jenkinsfile
+|   README
+|   
++---.vscode
+|       launch.json
+|       
++---jenkins
+|       Dockerfile
+|       
++---nginx
+|   |   default.conf
+|   |   Dockerfile
+|   |   
+|   \---certs
+|           selfsigned.crt
+|           selfsigned.key
+|           
++---result
+|   |   .dockerignore
+|   |   .DS_Store
+|   |   Dockerfile
+|   |   package-lock.json
+|   |   package.json
+|   |   server.js
+|   |   
+|   +---tests
+|   |       Dockerfile
+|   |       render.js
+|   |       tests.sh
+|   |       
+|   \---views
+|       |   angular.min.js
+|       |   app.js
+|       |   index.html
+|       |   socket.io.js
+|       |   
+|       \---stylesheets
+|               style.css
+|               
++---vote
+|   |   app.py
+|   |   Dockerfile
+|   |   requirements.txt
+|   |   
+|   +---static
+|   |   \---stylesheets
+|   |           style.css
+|   |           
+|   \---templates
+|           index.html
+|           
+\---worker
+        Dockerfile
+        Program.cs
+        Worker.csproj
