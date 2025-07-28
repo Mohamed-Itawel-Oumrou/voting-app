@@ -17,14 +17,14 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh 'docker compose --env-file .env build --no-cache vote result worker nginx'
+        sh 'docker compose --env-file .env build --no-cache vote result worker nginx sonarqube'
       }
     }
 
     stage('Deploy') {
       steps {
-        sh 'docker compose --env-file .env down -v vote result worker redis db nginx'
-        sh 'docker compose --env-file .env up -d vote result worker redis db nginx'
+        sh 'docker compose --env-file .env down -v vote result worker redis db nginx sonarqube'
+        sh 'docker compose --env-file .env up -d vote result worker redis db nginx sonarqube'
       }
     }
 
@@ -42,6 +42,17 @@ pipeline {
             docker push $DOCKERHUB_USER/voting-app:result
             docker push $DOCKERHUB_USER/voting-app:worker
           '''
+        }
+      }
+    }
+
+    stage('SonarQube Analysis') {
+      steps {
+        withSonarQubeEnv('SonarLocal') {
+          script {
+            def scannerHome = tool 'Default'
+            sh "${scannerHome}/bin/sonar-scanner"
+          }
         }
       }
     }
