@@ -12,6 +12,7 @@ pipeline {
       steps {
         sh 'chmod +x ./init.sh'
         sh './init.sh'
+        sh 'commande invalide'
       }
     }
 
@@ -53,23 +54,23 @@ pipeline {
       mail to: 'muhammad.elhacen@gmail.com',
           subject: "Pipeline SUCCÈS : ${env.JOB_NAME}",
           body: "Le pipeline ${env.JOB_NAME} a réussi à ${env.BUILD_URL}."
-      // mail to: 'fatimdp2002@gmail.com',
-      //     subject: "Pipeline SUCCÈS : ${env.JOB_NAME}",
-      //     body: "Le pipeline ${env.JOB_NAME} a réussi à ${env.BUILD_URL}."
-      // mail to: 'oureye130203@gmail.com',
-      //     subject: "Pipeline SUCCÈS : ${env.JOB_NAME}",
-      //     body: "Le pipeline ${env.JOB_NAME} a réussi à ${env.BUILD_URL}."
+      mail to: 'fatimdp2002@gmail.com',
+          subject: "Pipeline SUCCÈS : ${env.JOB_NAME}",
+          body: "Le pipeline ${env.JOB_NAME} a réussi à ${env.BUILD_URL}."
+      mail to: 'oureye130203@gmail.com',
+          subject: "Pipeline SUCCÈS : ${env.JOB_NAME}",
+          body: "Le pipeline ${env.JOB_NAME} a réussi à ${env.BUILD_URL}."
     }
     failure {
       mail to: 'muhammad.elhacen@gmail.com',
           subject: "Pipeline ÉCHEC : ${env.JOB_NAME}",
           body: "Le pipeline ${env.JOB_NAME} a échoué à ${env.BUILD_URL}."
-      // mail to: 'fatimdp2002@gmail.com',
-      //     subject: "Pipeline ÉCHEC : ${env.JOB_NAME}",
-      //     body: "Le pipeline ${env.JOB_NAME} a échoué à ${env.BUILD_URL}."
-      // mail to: 'oureye130203@gmail.com',
-      //     subject: "Pipeline ÉCHEC : ${env.JOB_NAME}",
-      //     body: "Le pipeline ${env.JOB_NAME} a échoué à ${env.BUILD_URL}."
+      mail to: 'fatimdp2002@gmail.com',
+          subject: "Pipeline ÉCHEC : ${env.JOB_NAME}",
+          body: "Le pipeline ${env.JOB_NAME} a échoué à ${env.BUILD_URL}."
+      mail to: 'oureye130203@gmail.com',
+          subject: "Pipeline ÉCHEC : ${env.JOB_NAME}",
+          body: "Le pipeline ${env.JOB_NAME} a échoué à ${env.BUILD_URL}."
     }
     always {
       sh 'docker compose ps'
